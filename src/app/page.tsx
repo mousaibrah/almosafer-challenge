@@ -7,7 +7,7 @@ import {
   SearchTypeSelector,
 } from "@/components";
 import { useGitHubSearch } from "@/hooks/use-github-search";
-import type { SearchType } from "@/types/github";
+import type { GitHubRepository, GitHubUser, SearchType } from "@/types";
 import { useState } from "react";
 
 export default function HomePage() {
@@ -46,9 +46,9 @@ export default function HomePage() {
             resultCount={totalCount}
           >
             <SearchResults
-              data={data}
+              data={data as (GitHubUser | GitHubRepository)[]}
               loading={loading}
-              error={error}
+              error={error || ""}
               hasMore={hasMore}
               loadMore={loadMore}
               totalCount={totalCount}

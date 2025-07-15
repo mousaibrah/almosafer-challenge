@@ -1,3 +1,4 @@
+import { QueryClientWrapper } from "@/api/QueryClientWrapper";
 import { ErrorBoundary, ThemeProvider } from "@/components";
 import type { Metadata } from "next";
 import type React from "react";
@@ -14,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <ErrorBoundary>
           <ThemeProvider
@@ -23,7 +24,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <QueryClientWrapper>{children}</QueryClientWrapper>
           </ThemeProvider>
         </ErrorBoundary>
       </body>

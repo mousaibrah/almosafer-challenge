@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import type { GitHubUser } from "@/types/github";
+import type { GitHubUser } from "@/types";
 import { ExternalLink } from "lucide-react";
 
 interface UserCardProps {
@@ -15,27 +15,24 @@ export function UserCard({ user }: UserCardProps) {
         <div className="flex items-center gap-4">
           <Avatar className="w-16 h-16">
             <AvatarImage
-              src={user.avatar_url || "/placeholder.svg"}
-              alt={user.login}
+              src={user?.avatar_url || "/placeholder.svg"}
+              alt={user?.login}
             />
             <AvatarFallback>
-              {user.login.charAt(0).toUpperCase()}
+              {user?.login?.charAt(0)?.toUpperCase()}
             </AvatarFallback>
           </Avatar>
 
           <div className="flex-1">
             <h3 className="text-xl font-semibold text-gray-900">
-              {user.name || user.login}
+              {user?.login}
             </h3>
-            <p className="text-gray-600">@{user.login}</p>
-            {user.bio && (
-              <p className="text-sm text-gray-700 mt-2">{user.bio}</p>
-            )}
+            <p className="text-gray-600">@{user?.login}</p>
           </div>
 
           <Button asChild variant="outline">
             <a
-              href={user.html_url}
+              href={user?.html_url}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2"

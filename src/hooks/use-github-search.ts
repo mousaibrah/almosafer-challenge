@@ -1,78 +1,106 @@
 "use client";
 
-import { searchGitHub } from "@/lib/helper";
-import type { GitHubRepository, GitHubUser, SearchType } from "@/types/github";
+import { endpoints } from "@/api/endpoints";
+import { useFetchData } from "@/api/useApi";
+import type {
+  GitHubRepository,
+  GitHubSearchResponse,
+  GitHubUser,
+  SearchType,
+} from "@/types";
 import { useCallback, useEffect, useState } from "react";
 import { useDebounce } from "./use-debounce";
 
 export function useGitHubSearch(query: string, searchType: SearchType) {
-  const [data, setData] = useState<(GitHubUser | GitHubRepository)[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const [data, setData] = useState<GitHubRepository[] | GitHubUser[] | []>([]);
 
   const debouncedQuery = useDebounce(query, 500);
 
-  const search = useCallback(
-    async (searchQuery: string, searchPage: number, reset = false) => {
-      if (!searchQuery.trim()) {
-        if (reset) {
-          setData([]);
-          setTotalCount(0);
-          setHasMore(false);
-        }
-        return;
-      }
-
-      setLoading(true);
-      setError(null);
-
-      try {
-        const result = await searchGitHub(searchQuery, searchType, searchPage);
-
-        if (reset) {
-          setData(result.items);
-        } else {
-          setData((prev) => [...prev, ...result.items]);
-        }
-
-        setTotalCount(result.total_count);
-        setHasMore(
-          result.items.length === 30 && result.total_count > searchPage * 30
-        );
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "An error occurred");
-        if (reset) {
-          setData([]);
-          setTotalCount(0);
-          setHasMore(false);
-        }
-      } finally {
-        setLoading(false);
-      }
+  const { isLoading: repositoriesLoading } = useFetchData<
+    GitHubSearchResponse<GitHubRepository>
+  >({
+    endpoint: endpoints.repositoriesSearch,
+    config: {
+      params: {
+        q: debouncedQuery,
+        type: searchType,
+        page: page,
+        per_page: 10,
+      },
     },
-    [searchType]
-  );
+    skip: !debouncedQuery || searchType !== "repositories",
+    options: {
+      onSuccess(data) {
+        if (page === 1) {
+          setData(data?.items || []);
+        } else {
+          setData(
+            (prev) => [...prev, ...(data?.items || [])] as GitHubRepository[]
+          );
+        }
+        setTotalCount(data.total_count);
+        setHasMore(data.items.length === 10 && data.total_count > page * 10);
+      },
+      onError(error) {
+        setError(error.message);
+      },
+    },
+  });
+
+  const { isLoading: usersLoading } = useFetchData<
+    GitHubSearchResponse<GitHubUser>
+  >({
+    endpoint: endpoints.usersSearch,
+    config: {
+      params: { q: debouncedQuery, type: searchType, page: page, per_page: 10 },
+    },
+    skip: !debouncedQuery || searchType !== "users",
+    options: {
+      onSuccess(data) {
+        if (page === 1) {
+          setData(data?.items || []);
+        } else {
+          setData((prev) => [...prev, ...(data?.items || [])] as GitHubUser[]);
+        }
+        setTotalCount(data.total_count);
+        setHasMore(data.items.length === 10 && data.total_count > page * 10);
+      },
+      onError(error) {
+        setError(error.message);
+      },
+    },
+  });
 
   // Reset and search when query or type changes
   useEffect(() => {
     setPage(1);
-    search(debouncedQuery, 1, true);
-  }, [debouncedQuery, searchType, search]);
+    setData([]);
+    setHasMore(false);
+    setTotalCount(0);
+    setError(null);
+  }, [debouncedQuery, searchType]);
 
   const loadMore = useCallback(() => {
-    if (!loading && hasMore) {
-      const nextPage = page + 1;
-      setPage(nextPage);
-      search(debouncedQuery, nextPage, false);
+    if (searchType === "repositories") {
+      if (!repositoriesLoading && hasMore) {
+        const nextPage = page + 1;
+        setPage(nextPage);
+      }
+    } else {
+      if (!usersLoading && hasMore) {
+        const nextPage = page + 1;
+        setPage(nextPage);
+      }
     }
-  }, [loading, hasMore, page, debouncedQuery, search]);
+  }, [repositoriesLoading, usersLoading, hasMore, page, searchType]);
 
   return {
     data,
-    loading,
+    loading: repositoriesLoading || usersLoading,
     error,
     hasMore,
     loadMore,

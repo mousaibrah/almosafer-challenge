@@ -1,4 +1,4 @@
 export const endpoints = {
-  userSearch: "search/users",
+  usersSearch: "search/users",
   repositoriesSearch: "search/repositories",
 };

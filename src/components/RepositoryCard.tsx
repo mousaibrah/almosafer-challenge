@@ -4,8 +4,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { getRepositoryForks, getRepositoryLanguages } from "@/lib/helper";
-import type { GitHubRepository, GitHubUser } from "@/types/github";
+// import { getRepositoryForks, getRepositoryLanguages } from "@/lib/helper";
+import type { GitHubRepository, GitHubUser } from "@/types";
 import { ExternalLink, Eye, GitFork, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -22,12 +22,12 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
     const loadExtraData = async () => {
       setLoadingExtras(true);
       try {
-        const [languagesData, forksData] = await Promise.all([
-          getRepositoryLanguages(repository.full_name),
-          getRepositoryForks(repository.full_name),
-        ]);
-        setLanguages(Object.keys(languagesData));
-        setForks(forksData.slice(0, 3));
+        // const [languagesData, forksData] = await Promise.all([
+        //   getRepositoryLanguages(repository?.full_name),
+        //   getRepositoryForks(repository?.full_name),
+        // ]);
+        // setLanguages(Object.keys(languagesData));
+        // setForks(forksData.slice(0, 3));
       } catch (error) {
         console.error("Failed to load extra repository data:", error);
       } finally {
@@ -36,7 +36,7 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
     };
 
     loadExtraData();
-  }, [repository.full_name]);
+  }, [repository?.full_name]);
 
   const getFileExtensions = (language: string): string[] => {
     switch (language.toLowerCase()) {
@@ -71,20 +71,20 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <h3 className="text-xl font-semibold text-gray-900 mb-1">
-              {repository.name}
+              {repository?.name}
             </h3>
             <p className="text-sm text-gray-600 mb-2">
-              by {repository.owner.login}
+              by {repository?.owner?.login}
             </p>
-            {repository.description && (
+            {repository?.description && (
               <p className="text-gray-700 text-sm leading-relaxed">
-                {repository.description}
+                {repository?.description}
               </p>
             )}
           </div>
           <Button asChild variant="outline" size="sm">
             <a
-              href={repository.html_url}
+              href={repository?.html_url}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2"
@@ -102,18 +102,18 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
           <div className="flex items-center gap-4 text-sm text-gray-600">
             <div className="flex items-center gap-1">
               <Star className="w-4 h-4" />
-              {repository.stargazers_count.toLocaleString()}
+              {repository?.stargazers_count?.toLocaleString()}
             </div>
             <div className="flex items-center gap-1">
               <GitFork className="w-4 h-4" />
-              {repository.forks_count.toLocaleString()}
+              {repository?.forks_count?.toLocaleString()}
             </div>
             <div className="flex items-center gap-1">
               <Eye className="w-4 h-4" />
-              {repository.watchers_count.toLocaleString()}
+              {repository?.watchers_count?.toLocaleString()}
             </div>
-            {repository.language && (
-              <Badge variant="secondary">{repository.language}</Badge>
+            {repository?.language && (
+              <Badge variant="secondary">{repository?.language}</Badge>
             )}
           </div>
 
@@ -142,13 +142,13 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
           )}
 
           {/* Recent Forks */}
-          {forks.length > 0 && (
+          {forks?.length > 0 && (
             <div>
               <h4 className="text-sm font-medium text-gray-900 mb-2">
                 Recent Forks:
               </h4>
               <div className="flex gap-2">
-                {forks.map((fork) => (
+                {forks?.map((fork) => (
                   <a
                     key={fork.id}
                     href={`https://github.com/${fork.login}/${repository.name}`}
@@ -158,14 +158,14 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
                   >
                     <Avatar className="w-6 h-6">
                       <AvatarImage
-                        src={fork.avatar_url || "/placeholder.svg"}
-                        alt={fork.login}
+                        src={fork?.avatar_url || "/placeholder.svg"}
+                        alt={fork?.login}
                       />
                       <AvatarFallback className="text-xs">
-                        {fork.login.charAt(0).toUpperCase()}
+                        {fork?.login?.charAt(0)?.toUpperCase()}
                       </AvatarFallback>
                     </Avatar>
-                    <span className="text-xs text-gray-600">{fork.login}</span>
+                    <span className="text-xs text-gray-600">{fork?.login}</span>
                   </a>
                 ))}
               </div>

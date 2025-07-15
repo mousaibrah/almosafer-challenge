@@ -3,7 +3,7 @@ import type {
   GitHubSearchResponse,
   GitHubUser,
   SearchType,
-} from "@/types/github";
+} from "@/types";
 import { apiCache } from "./cache";
 
 const GITHUB_API_BASE = "https://api.github.com";

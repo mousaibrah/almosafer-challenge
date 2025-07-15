@@ -1,6 +1,6 @@
 "use client";
 
-import type { GitHubRepository, GitHubUser, SearchType } from "@/types/github";
+import type { GitHubRepository, GitHubUser, SearchType } from "@/types";
 import { useEffect, useRef } from "react";
 import { EmptyState } from "./EmptyState";
 import { ErrorMessage } from "./ErrorMessage";
@@ -32,6 +32,8 @@ export function SearchResults({
   const observerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    console.log("hasMore :>> ", hasMore);
+    console.log("loading :>> ", loading);
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore && !loading) {
@@ -61,7 +63,7 @@ export function SearchResults({
     );
   }
 
-  if (!loading && data.length === 0) {
+  if (!loading && data?.length === 0) {
     return (
       <EmptyState
         title="No results found"
@@ -80,7 +82,7 @@ export function SearchResults({
       )}
 
       <div className="grid gap-4">
-        {data.map((item) => (
+        {data?.map((item) => (
           <div key={item.id}>
             {searchType === "users" ? (
               <UserCard user={item as GitHubUser} />
