@@ -8,7 +8,7 @@ interface ErrorMessageProps {
 export function ErrorMessage({ message }: ErrorMessageProps) {
   return (
     <Alert variant="destructive">
-      <AlertCircle className="h-4 w-4" />
+      <AlertCircle data-testid="error-icon" className="h-4 w-4" />
       <AlertDescription>{message}</AlertDescription>
     </Alert>
   );

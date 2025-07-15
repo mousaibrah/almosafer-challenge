@@ -10,7 +10,7 @@ interface UserCardProps {
 
 export function UserCard({ user }: UserCardProps) {
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card data-testid="user-card" className="hover:shadow-md transition-shadow">
       <CardContent className="p-4">
         <div className="flex items-center gap-4">
           <Avatar className="size-8 sm:size-10 md:size-12 lg:size-16">
