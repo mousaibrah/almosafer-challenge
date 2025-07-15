@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { getFileExtensions, getLanguageVariant } from "@/lib/helper";
+import { getFileExtensions } from "@/lib/helper";
 import type { GitHubForks, GitHubRepository } from "@/types";
 import { ExternalLink, Eye, GitFork, Star } from "lucide-react";
 import { useId, useState } from "react";
@@ -60,17 +60,20 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
                   {repository?.owner?.login?.charAt(0)?.toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <h3 className="text-sm md:text-xl max-w-[9rem] md:max-w-none truncate font-semibold text-gray-900 ">
+              <h3 className="text-sm md:text-xl max-w-[9rem] md:max-w-none truncate font-semibold text-blue-text">
                 {repository?.name}
               </h3>
             </div>
+            <h4 className="text-sm text-gray-600 ps-10">
+              By {repository?.owner?.login}
+            </h4>
           </div>
           <Button asChild variant="outline" size="sm">
             <a
               href={repository?.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 text-black"
             >
               <ExternalLink className="w-4 h-4" />
               <span className="hidden md:block"> View</span>
@@ -82,16 +85,16 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
       <CardContent className="transition-all duration-300">
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-            <div className="flex items-center gap-1">
-              <Star className="w-4 h-4" />
+            <div className="flex items-center gap-1 group hover:text-blue-text transition-colors duration-300">
+              <Star className="w-4 h-4 group-hover:text-blue-text transition-colors duration-300" />
               {repository?.stargazers_count?.toLocaleString()}
             </div>
-            <div className="flex items-center gap-1">
-              <GitFork className="w-4 h-4" />
+            <div className="flex items-center gap-1 group hover:text-blue-text transition-colors duration-300">
+              <GitFork className="w-4 h-4 group-hover:text-blue-text transition-colors duration-300" />
               {repository?.forks_count?.toLocaleString()}
             </div>
-            <div className="flex items-center gap-1">
-              <Eye className="w-4 h-4" />
+            <div className="flex items-center gap-1 group hover:text-blue-text transition-colors duration-300">
+              <Eye className="w-4 h-4 group-hover:text-blue-text transition-colors duration-300" />
               {repository?.watchers_count?.toLocaleString()}
             </div>
           </div>
@@ -107,7 +110,7 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
                   return (
                     <Badge
                       key={language}
-                      variant={getLanguageVariant(language)}
+                      // variant={getLanguageVariant(language)}
                       className="text-xs cursor-pointer "
                       title={`${language} files (${fileExtensions.join(", ")})`}
                     >

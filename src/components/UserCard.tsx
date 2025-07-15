@@ -24,10 +24,10 @@ export function UserCard({ user }: UserCardProps) {
           </Avatar>
 
           <div className="flex-1">
-            <h3 className="text-xl font-semibold text-gray-900">
+            <h3 className="text-xl font-semibold text-blue-text">
               {user?.login}
             </h3>
-            <p className="text-gray-600">@{user?.login}</p>
+            <p className="text-black">@{user?.login}</p>
           </div>
 
           <Button asChild variant="outline">
@@ -35,7 +35,7 @@ export function UserCard({ user }: UserCardProps) {
               href={user?.html_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 text-black"
             >
               <ExternalLink className="w-4 h-4" />
               <span className="hidden md:block">View Profile</span>

@@ -11,6 +11,7 @@ import FirstTimeMessage from "@/components/FirstTimeMessage";
 import { useGitHubSearch } from "@/hooks/use-github-search";
 import { useIsFirstTime } from "@/lib/store/useIsFirstTime";
 import type { GitHubRepository, GitHubUser, SearchType, Sort } from "@/types";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
@@ -22,8 +23,7 @@ export default function HomePage() {
   const { data, loading, error, hasMore, loadMore, totalCount } =
     useGitHubSearch(query, searchType, sort, order);
   const { isFirstTime } = useIsFirstTime();
-  const [isFirstTimeMessageOpen, setIsFirstTimeMessageOpen] =
-    useState(false);
+  const [isFirstTimeMessageOpen, setIsFirstTimeMessageOpen] = useState(false);
   useEffect(() => {
     if (isFirstTime) {
       setIsFirstTimeMessageOpen(true);
@@ -33,22 +33,32 @@ export default function HomePage() {
   }, [isFirstTime]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-white">
       <div className="px-[3.5%] py-8">
         <header className="text-center mb-8 flex flex-col gap-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-lg  md:text-4xl font-bold text-gray-900 ">
-              GitHub Search
-            </h1>
+            <div className="flex items-center gap-4">
+              <Image
+                src="/logo.png"
+                alt="GitHub Search"
+                width={1920}
+                height={1080}
+                className="size-8"
+              />
+              <h1 className="text-lg  md:text-3xl font-bold text-black ">
+                Search
+              </h1>
+            </div>
+
             <AuthModal />
           </div>
-          <p className="text-gray-600 text-sm md:text-lg">
+          <p className="text-black text-sm md:text-lg">
             Search for repositories and users across GitHub
           </p>
         </header>
 
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+          <div className="bg-white rounded-lg border border-border shadow-lg p-6 mb-8">
             <div className="space-y-4">
               <SearchTypeSelector value={searchType} onChange={setSearchType} />
               <SearchInput

@@ -67,7 +67,7 @@ export function AuthModal() {
                     {user.name?.charAt(0) || user.email?.charAt(0) || "U"}
                   </AvatarFallback>
                 </Avatar>
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 text-start">
                   <p className="text-sm font-medium truncate">{user.name}</p>
                   <p className="text-xs text-muted-foreground truncate">
                     {user.email}

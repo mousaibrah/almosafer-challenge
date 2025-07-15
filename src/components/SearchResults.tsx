@@ -89,7 +89,7 @@ export function SearchResults({
     <div className="space-y-6">
       {totalCount > 0 && (
         <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center justify-between">
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-black">
             Found {totalCount.toLocaleString()} {searchType} for &quot;{query}
             &quot;
           </div>
