@@ -16,12 +16,6 @@ interface AxiosRequestParams {
   isMultipart?: boolean; // Flag to indicate if the request is multipart
 }
 
-axiosInstance.interceptors.request.use(async (config) => {
-  config.headers.Authorization = `Bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`;
-
-  return config;
-});
-
 const axiosRequest = async ({
   url,
   method,
