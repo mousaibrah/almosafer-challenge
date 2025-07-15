@@ -1,12 +1,12 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { AxiosError, AxiosRequestConfig } from 'axios';
-import axiosRequest, { axiosInstance } from './client';
-import { useAuthStore } from '@/store';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { AxiosError, AxiosRequestConfig } from "axios";
+import { toast } from "sonner";
+import axiosRequest, { axiosInstance } from "./client";
 
 // API hooks with usePost and useUpdate
 export const useApi = <T>(
   url: string,
-  method: 'POST' | 'PUT' | 'PATCH' | 'DELETE',
+  method: "POST" | "PUT" | "PATCH" | "DELETE",
   options?: {
     onSuccess?: (data: T) => void;
     onError?: (error: AxiosError) => void;
@@ -42,7 +42,7 @@ export const useApi = <T>(
         options.onError(error as AxiosError);
       }
     },
-    networkMode: 'always',
+    networkMode: "always",
   });
 
   return {
@@ -72,13 +72,25 @@ interface UseGetConfig<T> {
 
 type Variables = Record<string, unknown>;
 
-export const useFetchData = <T>({ queryKey = '', endpoint, config, options, shouldFetch = true, includeHeaders, skip, forceRefetch = false }: UseGetConfig<T>) => {
-  const { logout } = useAuthStore();
-
-  return useQuery<T, AxiosError, T, [string, Variables | undefined, string, boolean]>({
+export const useFetchData = <T>({
+  queryKey = "",
+  endpoint,
+  config,
+  options,
+  shouldFetch = true,
+  includeHeaders,
+  skip,
+  forceRefetch = false,
+}: UseGetConfig<T>) => {
+  return useQuery<
+    T,
+    AxiosError,
+    T,
+    [string, Variables | undefined, string, boolean]
+  >({
     queryKey: [endpoint, config?.params as Variables, queryKey, forceRefetch],
     enabled: shouldFetch && !skip,
-    networkMode: 'offlineFirst',
+    networkMode: "offlineFirst",
     staleTime: 3,
     retry: false,
     refetchOnWindowFocus: false,
@@ -106,8 +118,8 @@ export const useFetchData = <T>({ queryKey = '', endpoint, config, options, shou
           options.onError(error);
         }
         if (error instanceof AxiosError) {
-          if (error?.response?.data?.message?.includes('Invalid token') || error?.response?.status === 401) {
-            logout();
+          if (error?.response?.status === 401) {
+            toast.error("Unauthorized");
           }
         }
         throw error;

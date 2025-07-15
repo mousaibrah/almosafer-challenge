@@ -3,7 +3,7 @@
 import { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-export function AuthInitializer({ children }: { children: ReactNode }) {
+export function QueryClientWrapper({ children }: { children: ReactNode }) {
   const queryClient = new QueryClient();
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }
