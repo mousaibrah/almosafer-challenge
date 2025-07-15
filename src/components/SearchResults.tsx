@@ -1,12 +1,19 @@
 "use client";
 
-import type { GitHubRepository, GitHubUser, SearchType } from "@/types";
-import { useEffect, useRef } from "react";
+import type { GitHubRepository, GitHubUser, SearchType, Sort } from "@/types";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { EmptyState } from "./EmptyState";
 import { ErrorMessage } from "./ErrorMessage";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { RepositoryCard } from "./RepositoryCard";
 import { UserCard } from "./UserCard";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 interface SearchResultsProps {
   data: (GitHubUser | GitHubRepository)[];
@@ -17,6 +24,10 @@ interface SearchResultsProps {
   totalCount: number;
   searchType: SearchType;
   query: string;
+  sort: Sort;
+  order: string;
+  setSort: Dispatch<SetStateAction<Sort>>;
+  setOrder: Dispatch<SetStateAction<string>>;
 }
 
 export function SearchResults({
@@ -28,12 +39,14 @@ export function SearchResults({
   totalCount,
   searchType,
   query,
+  sort,
+  order,
+  setSort,
+  setOrder,
 }: SearchResultsProps) {
   const observerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log("hasMore :>> ", hasMore);
-    console.log("loading :>> ", loading);
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore && !loading) {
@@ -75,9 +88,36 @@ export function SearchResults({
   return (
     <div className="space-y-6">
       {totalCount > 0 && (
-        <div className="text-sm text-gray-600">
-          Found {totalCount.toLocaleString()} {searchType} for &quot;{query}
-          &quot;
+        <div className="flex items-center justify-between">
+          <div className="text-sm text-gray-600">
+            Found {totalCount.toLocaleString()} {searchType} for &quot;{query}
+            &quot;
+          </div>
+          <div>
+            <Select
+              value={sort}
+              onValueChange={(value) => setSort(value as Sort)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Sort" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="best">Best Match</SelectItem>
+                <SelectItem value="stars">Stars</SelectItem>
+                <SelectItem value="forks">Forks</SelectItem>
+                <SelectItem value="updated">Updated</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={order} onValueChange={setOrder}>
+              <SelectTrigger>
+                <SelectValue placeholder="Order" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="asc">Oldest</SelectItem>
+                <SelectItem value="desc">Newest</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       )}
 

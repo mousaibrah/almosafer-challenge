@@ -11,7 +11,12 @@ import type {
 import { useCallback, useEffect, useState } from "react";
 import { useDebounce } from "./use-debounce";
 
-export function useGitHubSearch(query: string, searchType: SearchType) {
+export function useGitHubSearch(
+  query: string,
+  searchType: SearchType,
+  sort: string | undefined,
+  order: string = "desc"
+) {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
@@ -30,6 +35,8 @@ export function useGitHubSearch(query: string, searchType: SearchType) {
         type: searchType,
         page: page,
         per_page: 10,
+        sort: sort === "best" ? undefined : sort,
+        order: order,
       },
     },
     skip: !debouncedQuery || searchType !== "repositories",
@@ -56,7 +63,14 @@ export function useGitHubSearch(query: string, searchType: SearchType) {
   >({
     endpoint: endpoints.usersSearch,
     config: {
-      params: { q: debouncedQuery, type: searchType, page: page, per_page: 10 },
+      params: {
+        q: debouncedQuery,
+        type: searchType,
+        page: page,
+        per_page: 10,
+        sort: sort === "best" ? undefined : sort,
+        order: order,
+      },
     },
     skip: !debouncedQuery || searchType !== "users",
     options: {

@@ -7,15 +7,17 @@ import {
   SearchTypeSelector,
 } from "@/components";
 import { useGitHubSearch } from "@/hooks/use-github-search";
-import type { GitHubRepository, GitHubUser, SearchType } from "@/types";
+import type { GitHubRepository, GitHubUser, SearchType, Sort } from "@/types";
 import { useState } from "react";
 
 export default function HomePage() {
   const [searchType, setSearchType] = useState<SearchType>("repositories");
+  const [sort, setSort] = useState<Sort>("best");
+  const [order, setOrder] = useState<string>("desc");
   const [query, setQuery] = useState("");
 
   const { data, loading, error, hasMore, loadMore, totalCount } =
-    useGitHubSearch(query, searchType);
+    useGitHubSearch(query, searchType, sort, order);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -54,6 +56,10 @@ export default function HomePage() {
               totalCount={totalCount}
               searchType={searchType}
               query={query}
+              sort={sort}
+              order={order}
+              setSort={setSort}
+              setOrder={setOrder}
             />
           </AccessibilityWrapper>
         </div>
