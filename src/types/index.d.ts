@@ -73,7 +73,7 @@ export interface GitHubRepository {
   archived: boolean;
   disabled: boolean;
   open_issues_count: number;
-  license: string | null;
+  license: License | null;
   allow_forking: boolean;
   is_template: boolean;
   web_commit_signoff_required: boolean;
@@ -84,6 +84,14 @@ export interface GitHubRepository {
   default_branch: string;
   permissions: Permissions;
   score: number;
+}
+
+export interface License {
+  key: string;
+  name: string;
+  url: string;
+  spdx_id: string;
+  node_id: string;
 }
 
 export interface Owner {

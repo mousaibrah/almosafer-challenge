@@ -38,6 +38,7 @@ const mockRepository: GitHubRepository = {
       "https://api.github.com/users/testuser/received_events",
     type: "User",
     site_admin: false,
+    user_view_type: "",
   },
   html_url: "https://github.com/testuser/test-repo",
   description: "Test repository description",
@@ -105,7 +106,6 @@ const mockRepository: GitHubRepository = {
   ssh_url: "git@github.com:testuser/test-repo.git",
   clone_url: "https://github.com/testuser/test-repo.git",
   svn_url: "https://svn.github.com/testuser/test-repo",
-  homepage: null,
   size: 1000,
   stargazers_count: 100,
   watchers_count: 50,
@@ -133,6 +133,17 @@ const mockRepository: GitHubRepository = {
   web_commit_signoff_required: false,
   default_branch: "main",
   score: 1.0,
+  visibility: "",
+  forks: 0,
+  open_issues: 0,
+  watchers: 0,
+  permissions: {
+    admin: false,
+    maintain: false,
+    push: false,
+    triage: false,
+    pull: false,
+  },
 };
 
 const createWrapper = () => {
@@ -143,9 +154,11 @@ const createWrapper = () => {
       },
     },
   });
-  return ({ children }: { children: React.ReactNode }) => (
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
+  Wrapper.displayName = "Wrapper";
+  return Wrapper;
 };
 
 describe("RepositoryCard", () => {
@@ -158,7 +171,7 @@ describe("RepositoryCard", () => {
       </Wrapper>
     );
 
-    expect(screen.getByText("test-repo")).toBeInTheDocument();
+    expect(screen.getByText("test-repo")).toBeDefined();
   });
 
   it("renders repository description", () => {
@@ -168,7 +181,7 @@ describe("RepositoryCard", () => {
       </Wrapper>
     );
 
-    expect(screen.getByText("Test repository description")).toBeInTheDocument();
+    expect(screen.getByText("Test repository description")).toBeDefined();
   });
 
   it("renders repository language", () => {
@@ -178,7 +191,7 @@ describe("RepositoryCard", () => {
       </Wrapper>
     );
 
-    expect(screen.getByText("JavaScript")).toBeInTheDocument();
+    expect(screen.getByText("JavaScript")).toBeDefined();
   });
 
   it("renders star count", () => {
@@ -188,7 +201,7 @@ describe("RepositoryCard", () => {
       </Wrapper>
     );
 
-    expect(screen.getByText("100")).toBeInTheDocument();
+    expect(screen.getByText("100")).toBeDefined();
   });
 
   it("renders fork count", () => {
@@ -198,7 +211,7 @@ describe("RepositoryCard", () => {
       </Wrapper>
     );
 
-    expect(screen.getByText("25")).toBeInTheDocument();
+    expect(screen.getByText("25")).toBeDefined();
   });
 
   it("renders open issues count", () => {
@@ -208,7 +221,7 @@ describe("RepositoryCard", () => {
       </Wrapper>
     );
 
-    expect(screen.getByText("10")).toBeInTheDocument();
+    expect(screen.getByText("10")).toBeDefined();
   });
 
   it("renders owner avatar", () => {
@@ -219,7 +232,7 @@ describe("RepositoryCard", () => {
     );
 
     // The Avatar component shows a fallback with the first letter
-    expect(screen.getByText("T")).toBeInTheDocument();
+    expect(screen.getByText("T")).toBeDefined();
   });
 
   it("renders owner name", () => {
@@ -229,7 +242,7 @@ describe("RepositoryCard", () => {
       </Wrapper>
     );
 
-    expect(screen.getByText("testuser")).toBeInTheDocument();
+    expect(screen.getByText("testuser")).toBeDefined();
   });
 
   it("renders license information", () => {
@@ -239,7 +252,7 @@ describe("RepositoryCard", () => {
       </Wrapper>
     );
 
-    expect(screen.getByText("MIT License")).toBeInTheDocument();
+    expect(screen.getByText("MIT License")).toBeDefined();
   });
 
   it("renders repository link", () => {
@@ -250,7 +263,7 @@ describe("RepositoryCard", () => {
     );
 
     const link = screen.getByRole("link", { name: /view/i });
-    expect(link).toHaveAttribute(
+    expect(link).toHaveProperty(
       "href",
       "https://github.com/testuser/test-repo"
     );
@@ -264,20 +277,18 @@ describe("RepositoryCard", () => {
       </Wrapper>
     );
 
-    expect(
-      screen.queryByText("Test repository description")
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText("Test repository description")).not.toBeDefined();
   });
 
   it("handles repository without language", () => {
-    const repoWithoutLanguage = { ...mockRepository, language: null };
+    const repoWithoutLanguage = { ...mockRepository, language: undefined };
     render(
       <Wrapper>
         <RepositoryCard repository={repoWithoutLanguage} />
       </Wrapper>
     );
 
-    expect(screen.queryByText("JavaScript")).not.toBeInTheDocument();
+    expect(screen.queryByText("JavaScript")).not.toBeDefined();
   });
 
   it("handles repository without license", () => {
@@ -288,7 +299,7 @@ describe("RepositoryCard", () => {
       </Wrapper>
     );
 
-    expect(screen.queryByText("MIT License")).not.toBeInTheDocument();
+    expect(screen.queryByText("MIT License")).not.toBeDefined();
   });
 
   it("handles private repository", () => {
@@ -299,7 +310,7 @@ describe("RepositoryCard", () => {
       </Wrapper>
     );
 
-    expect(screen.getByText("test-repo")).toBeInTheDocument();
+    expect(screen.getByText("test-repo")).toBeDefined();
   });
 
   it("handles forked repository", () => {
@@ -310,7 +321,7 @@ describe("RepositoryCard", () => {
       </Wrapper>
     );
 
-    expect(screen.getByText("test-repo")).toBeInTheDocument();
+    expect(screen.getByText("test-repo")).toBeDefined();
   });
 
   it("formats large numbers correctly", () => {
@@ -326,8 +337,8 @@ describe("RepositoryCard", () => {
       </Wrapper>
     );
 
-    expect(screen.getByText("1,500")).toBeInTheDocument();
-    expect(screen.getByText("2,500")).toBeInTheDocument();
-    expect(screen.getByText("1,000")).toBeInTheDocument();
+    expect(screen.getByText("1,500")).toBeDefined();
+    expect(screen.getByText("2,500")).toBeDefined();
+    expect(screen.getByText("1,000")).toBeDefined();
   });
 });
