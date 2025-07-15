@@ -225,3 +225,16 @@ export interface GitHubForks {
   default_branch: string;
   permissions: Permissions;
 }
+
+export interface AuthenticatedUser {
+  id?: string | undefined;
+  name?: string | null | undefined;
+  email?: string | null | undefined;
+  image?: string | null | undefined;
+}
+
+export interface GitHubSession {
+  accessToken: string;
+  expires: string;
+  user: AuthenticatedUser;
+}

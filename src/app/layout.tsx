@@ -1,5 +1,6 @@
 import { QueryClientWrapper } from "@/api/QueryClientWrapper";
 import { ErrorBoundary, ThemeProvider } from "@/components";
+import { AuthProvider } from "@/lib/auth";
 import type { Metadata } from "next";
 import type React from "react";
 import "./globals.css";
@@ -24,7 +25,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <QueryClientWrapper>{children}</QueryClientWrapper>
+            <AuthProvider>
+              <QueryClientWrapper>{children}</QueryClientWrapper>
+            </AuthProvider>
           </ThemeProvider>
         </ErrorBoundary>
       </body>

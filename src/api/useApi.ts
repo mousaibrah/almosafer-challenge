@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError, AxiosRequestConfig } from "axios";
 import { toast } from "sonner";
-import axiosRequest, { axiosInstance } from "./client";
+import axiosRequest from "./client";
 
 // API hooks with usePost and useUpdate
 export const useApi = <T>(
@@ -97,7 +97,9 @@ export const useFetchData = <T>({
     refetchOnMount: false,
     queryFn: async () => {
       try {
-        const response = await axiosInstance.get(endpoint, {
+        const response = await axiosRequest({
+          url: endpoint,
+          method: "GET",
           params: config?.params,
         });
 
