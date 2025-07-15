@@ -24,7 +24,7 @@ export const getFileExtensions = (language: string): string[] => {
       return [];
   }
 };
-// Language mapping helper
+
 export const getLanguageVariant = (language: string) => {
   switch (language.toLowerCase()) {
     case "javascript":

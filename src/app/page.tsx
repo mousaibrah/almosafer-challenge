@@ -7,9 +7,11 @@ import {
   SearchResults,
   SearchTypeSelector,
 } from "@/components";
+import FirstTimeMessage from "@/components/FirstTimeMessage";
 import { useGitHubSearch } from "@/hooks/use-github-search";
+import { useIsFirstTime } from "@/lib/store/useIsFirstTime";
 import type { GitHubRepository, GitHubUser, SearchType, Sort } from "@/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
   const [searchType, setSearchType] = useState<SearchType>("repositories");
@@ -19,18 +21,28 @@ export default function HomePage() {
 
   const { data, loading, error, hasMore, loadMore, totalCount } =
     useGitHubSearch(query, searchType, sort, order);
+  const { isFirstTime } = useIsFirstTime();
+  const [isFirstTimeMessageOpen, setIsFirstTimeMessageOpen] =
+    useState(false);
+  useEffect(() => {
+    if (isFirstTime) {
+      setIsFirstTimeMessageOpen(true);
+    } else {
+      setIsFirstTimeMessageOpen(false);
+    }
+  }, [isFirstTime]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="container mx-auto px-4 py-8">
-        <header className="text-center mb-8 relative">
-          <div className="absolute top-0 right-0">
+      <div className="px-[3.5%] py-8">
+        <header className="text-center mb-8 flex flex-col gap-4">
+          <div className="flex justify-between items-center">
+            <h1 className="text-lg  md:text-4xl font-bold text-gray-900 ">
+              GitHub Search
+            </h1>
             <AuthModal />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            GitHub Search
-          </h1>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 text-sm md:text-lg">
             Search for repositories and users across GitHub
           </p>
         </header>
@@ -67,6 +79,10 @@ export default function HomePage() {
             />
           </AccessibilityWrapper>
         </div>
+        <FirstTimeMessage
+          onClose={() => setIsFirstTimeMessageOpen(false)}
+          open={isFirstTimeMessageOpen}
+        />
       </div>
     </div>
   );

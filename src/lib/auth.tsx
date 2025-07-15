@@ -26,7 +26,7 @@ function AuthContextProvider({ children }: { children: ReactNode }) {
   const { data: session, status } = useSession();
 
   const handleSignOut = () => {
-    clearSessionCache(); // Clear the session cache
+    clearSessionCache();
     signOut();
   };
 

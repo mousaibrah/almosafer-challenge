@@ -3,6 +3,9 @@ module.exports = {
   darkMode: false,
   theme: {
     extend: {
+      screens: {
+        xs: "420px",
+      },
       colors: {
         background: "#FFFFFF",
         foreground: "#0A0A0A",

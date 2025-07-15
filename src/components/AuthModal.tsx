@@ -3,12 +3,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
+import { useIsFirstTime } from "@/lib/store/useIsFirstTime";
 import { ChevronDown, GithubIcon, LogOut } from "lucide-react";
 import { useState } from "react";
 
 export function AuthModal() {
   const { user, isLoading, signIn, signOut } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { setIsFirstTime } = useIsFirstTime();
 
   if (isLoading) {
     return (
@@ -20,9 +22,15 @@ export function AuthModal() {
 
   if (!user) {
     return (
-      <Button onClick={signIn} className="gap-2">
+      <Button
+        onClick={() => {
+          signIn();
+          setIsFirstTime(false);
+        }}
+        className="gap-2"
+      >
         <GithubIcon className="h-4 w-4" />
-        Login with GitHub
+        <span className="hidden xs:inline">Login with GitHub</span>
       </Button>
     );
   }

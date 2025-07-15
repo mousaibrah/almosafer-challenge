@@ -89,7 +89,6 @@ export function useGitHubSearch(
     },
   });
 
-  // Reset and search when query or type changes
   useEffect(() => {
     setPage(1);
     setData([]);

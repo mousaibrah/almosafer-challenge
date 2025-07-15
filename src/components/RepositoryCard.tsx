@@ -5,11 +5,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { getFileExtensions } from "@/lib/file-tags";
-import { getLanguageVariant } from "@/lib/helper";
+import { getFileExtensions, getLanguageVariant } from "@/lib/helper";
 import type { GitHubForks, GitHubRepository } from "@/types";
 import { ExternalLink, Eye, GitFork, Star } from "lucide-react";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 interface RepositoryCardProps {
   repository: GitHubRepository;
@@ -18,9 +17,11 @@ interface RepositoryCardProps {
 export function RepositoryCard({ repository }: RepositoryCardProps) {
   const [languages, setLanguages] = useState<string[]>([]);
   const [forks, setForks] = useState<GitHubForks[]>([]);
+  const queryKey = useId();
 
   useFetchData<Record<string, number>>({
     endpoint: repository.languages_url,
+    queryKey: queryKey,
     options: {
       onSuccess(data) {
         setLanguages(Object.keys(data));
@@ -30,6 +31,7 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
 
   useFetchData<GitHubForks[]>({
     endpoint: repository.forks_url,
+    queryKey: queryKey,
     config: {
       params: {
         per_page: 3,
@@ -79,7 +81,6 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
 
       <CardContent className="transition-all duration-300">
         <div className="space-y-4">
-          {/* Stats */}
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
             <div className="flex items-center gap-1">
               <Star className="w-4 h-4" />
@@ -95,7 +96,6 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
             </div>
           </div>
 
-          {/* Languages */}
           {languages.length > 0 && (
             <div>
               <h4 className="text-sm font-medium text-gray-900 mb-2">
@@ -119,7 +119,6 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
             </div>
           )}
 
-          {/* Recent Forks */}
           {forks?.length > 0 && (
             <div>
               <h4 className="text-sm font-medium text-gray-900 mb-2">
