@@ -88,17 +88,17 @@ export function SearchResults({
   return (
     <div className="space-y-6">
       {totalCount > 0 && (
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-center justify-between">
           <div className="text-sm text-gray-600">
             Found {totalCount.toLocaleString()} {searchType} for &quot;{query}
             &quot;
           </div>
-          <div>
+          <div className="flex items-center gap-2">
             <Select
               value={sort}
               onValueChange={(value) => setSort(value as Sort)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full md:w-auto">
                 <SelectValue placeholder="Sort" />
               </SelectTrigger>
               <SelectContent>
@@ -109,7 +109,7 @@ export function SearchResults({
               </SelectContent>
             </Select>
             <Select value={order} onValueChange={setOrder}>
-              <SelectTrigger>
+              <SelectTrigger className="w-full md:w-auto">
                 <SelectValue placeholder="Order" />
               </SelectTrigger>
               <SelectContent>

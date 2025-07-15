@@ -11,9 +11,9 @@ interface UserCardProps {
 export function UserCard({ user }: UserCardProps) {
   return (
     <Card className="hover:shadow-md transition-shadow">
-      <CardContent className="p-6">
+      <CardContent className="p-4">
         <div className="flex items-center gap-4">
-          <Avatar className="w-16 h-16">
+          <Avatar className="size-8 sm:size-10 md:size-12 lg:size-16">
             <AvatarImage
               src={user?.avatar_url || "/placeholder.svg"}
               alt={user?.login}
@@ -38,7 +38,7 @@ export function UserCard({ user }: UserCardProps) {
               className="flex items-center gap-2"
             >
               <ExternalLink className="w-4 h-4" />
-              View Profile
+              <span className="hidden md:block">View Profile</span>
             </a>
           </Button>
         </div>

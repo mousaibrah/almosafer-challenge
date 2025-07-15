@@ -38,7 +38,6 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
     },
     options: {
       onSuccess(data) {
-        console.log("data :>> ", data);
         setForks(data);
       },
     },
@@ -46,7 +45,7 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
 
   return (
     <Card className="hover:shadow-md transition-shadow">
-      <CardHeader className="pb-3">
+      <CardHeader>
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1">
             <div className="flex items-center gap-2">
@@ -78,7 +77,7 @@ export function RepositoryCard({ repository }: RepositoryCardProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="pt-0 transition-all duration-300">
+      <CardContent className="transition-all duration-300">
         <div className="space-y-4">
           {/* Stats */}
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
