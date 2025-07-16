@@ -1,48 +1,49 @@
-"use client"
+"use client";
 
-import React from "react"
-import { AlertTriangle, RefreshCw } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { RefreshCw } from "lucide-react";
+import React from "react";
+import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
 
-interface ErrorBoundaryState {
-  hasError: boolean
-  error?: Error
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
 }
 
-export class ErrorBoundary extends React.Component<{ children: React.ReactNode }, ErrorBoundaryState> {
-  constructor(props: { children: React.ReactNode }) {
-    super(props)
-    this.state = { hasError: false }
-  }
+const ErrorFallback: React.FC<{
+  error: Error;
+  resetErrorBoundary: () => void;
+}> = ({ error, resetErrorBoundary }) => {
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <Alert className="max-w-lg w-full">
+        <AlertTitle>Something went wrong</AlertTitle>
+        <AlertDescription className="mt-2">
+          {error?.message || "An unexpected error occurred"}
+          <Button onClick={resetErrorBoundary} className="mt-4 w-full">
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Reload Page
+          </Button>
+        </AlertDescription>
+      </Alert>
+    </div>
+  );
+};
 
-  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return { hasError: true, error }
-  }
+export const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ children }) => {
+  const handleError = (error: Error, errorInfo: React.ErrorInfo) => {
+    console.error("Error caught by boundary:", error, errorInfo);
+  };
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error("Error caught by boundary:", error, errorInfo)
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="min-h-screen flex items-center justify-center p-4">
-          <Alert className="max-w-md">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Something went wrong</AlertTitle>
-            <AlertDescription className="mt-2">
-              {this.state.error?.message || "An unexpected error occurred"}
-            </AlertDescription>
-            <Button onClick={() => window.location.reload()} className="mt-4 w-full" variant="outline">
-              <RefreshCw className="w-4 h-4 mr-2" />
-              Reload Page
-            </Button>
-          </Alert>
-        </div>
-      )
-    }
-
-    return this.props.children
-  }
-}
+  return (
+    <ReactErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onError={handleError}
+      onReset={() => {
+        window.location.reload();
+      }}
+    >
+      {children}
+    </ReactErrorBoundary>
+  );
+};
