@@ -1,6 +1,6 @@
-import type { GitHubUser } from "@/types";
+import type { GitHubUser } from "@/types/github";
 import { render, screen } from "@testing-library/react";
-import { UserCard } from "../UserCard";
+import { UserCard } from "../cards/UserCard";
 
 const mockUser: GitHubUser = {
   login: "testuser",

@@ -4,7 +4,7 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 
 function Select({
   ...props
@@ -129,7 +129,10 @@ function SelectSeparator({
   return (
     <SelectPrimitive.Separator
       data-slot="select-separator"
-      className={cn("bg-background pointer-events-none -mx-1 my-1 h-px", className)}
+      className={cn(
+        "bg-background pointer-events-none -mx-1 my-1 h-px",
+        className
+      )}
       {...props}
     />
   );

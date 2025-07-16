@@ -7,10 +7,15 @@ import {
   SearchResults,
   SearchTypeSelector,
 } from "@/components";
-import FirstTimeMessage from "@/components/FirstTimeMessage";
+import FirstTimeMessage from "@/components/first-time-modal/FirstTimeMessage";
 import { useGitHubSearch } from "@/hooks/use-github-search";
-import { useIsFirstTime } from "@/lib/store/useIsFirstTime";
-import type { GitHubRepository, GitHubUser, SearchType, Sort } from "@/types";
+import { useIsFirstTime } from "@/store/useIsFirstTime";
+import type {
+  GitHubRepository,
+  GitHubUser,
+  SearchType,
+  Sort,
+} from "@/types/github";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 

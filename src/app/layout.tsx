@@ -1,6 +1,6 @@
 import { QueryClientWrapper } from "@/api/QueryClientWrapper";
-import { ErrorBoundary, ThemeProvider } from "@/components";
-import { AuthProvider } from "@/lib/auth";
+import { ErrorBoundary } from "@/components";
+import { AuthProvider } from "@/hooks/use-auth";
 import type { Metadata } from "next";
 import type React from "react";
 import "./globals.css";
@@ -19,16 +19,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ErrorBoundary>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <AuthProvider>
-              <QueryClientWrapper>{children}</QueryClientWrapper>
-            </AuthProvider>
-          </ThemeProvider>
+          <AuthProvider>
+            <QueryClientWrapper>{children}</QueryClientWrapper>
+          </AuthProvider>
         </ErrorBoundary>
       </body>
     </html>

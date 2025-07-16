@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { SearchTypeSelector } from "../SearchTypeSelector";
+import { SearchTypeSelector } from "../search-services/SearchTypeSelector";
 
 describe("SearchTypeSelector", () => {
   const mockOnChange = jest.fn();

@@ -7,7 +7,7 @@ import type {
   GitHubSearchResponse,
   GitHubUser,
   SearchType,
-} from "@/types";
+} from "@/types/github";
 import { useCallback, useEffect, useState } from "react";
 import { useDebounce } from "./use-debounce";
 
@@ -23,11 +23,12 @@ export function useGitHubSearch(
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<GitHubRepository[] | GitHubUser[] | []>([]);
 
-  const debouncedQuery = useDebounce(query, 500);
+  const debouncedQuery = useDebounce(query, 1000);
 
   const { isLoading: repositoriesLoading } = useFetchData<
     GitHubSearchResponse<GitHubRepository>
   >({
+    queryKey: debouncedQuery,
     endpoint: endpoints.repositoriesSearch,
     config: {
       params: {
@@ -61,6 +62,7 @@ export function useGitHubSearch(
   const { isLoading: usersLoading } = useFetchData<
     GitHubSearchResponse<GitHubUser>
   >({
+    queryKey: debouncedQuery,
     endpoint: endpoints.usersSearch,
     config: {
       params: {

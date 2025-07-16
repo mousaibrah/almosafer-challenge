@@ -5,8 +5,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { getFileExtensions } from "@/lib/helper";
-import type { GitHubForks, GitHubRepository } from "@/types";
+import { getFileExtensions } from "@/helpers/helper";
+import type { GitHubForks, GitHubRepository } from "@/types/github";
 import { ExternalLink, Eye, GitFork, Star } from "lucide-react";
 import { useId, useState } from "react";
 

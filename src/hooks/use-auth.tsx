@@ -1,7 +1,7 @@
 "use client";
 
 import { clearSessionCache } from "@/api/client";
-import { AuthenticatedUser } from "@/types";
+import { AuthenticatedUser } from "@/types/github";
 import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import { createContext, ReactNode, useContext } from "react";
 

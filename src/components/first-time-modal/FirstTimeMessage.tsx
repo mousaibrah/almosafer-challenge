@@ -1,9 +1,9 @@
 "use client";
-import { useAuth } from "@/lib/auth";
-import { useIsFirstTime } from "@/lib/store/useIsFirstTime";
+import { useAuth } from "@/hooks/use-auth";
+import { useIsFirstTime } from "@/store/useIsFirstTime";
 import { Loader2 } from "lucide-react";
+import { Button } from "../ui/button";
 import { Modal } from "./ModalWithChilderen";
-import { Button } from "./ui/button";
 
 const FirstTimeMessage = ({
   onClose,
@@ -16,12 +16,7 @@ const FirstTimeMessage = ({
   const { setIsFirstTime } = useIsFirstTime();
 
   return (
-    <Modal
-      open={open}
-      borderRadius="lg"
-      size="extraSmall"
-      onClose={onClose}
-    >
+    <Modal open={open} borderRadius="lg" size="extraSmall" onClose={onClose}>
       <Modal.Header>
         <p>Welcome to GitHub Search</p>
       </Modal.Header>

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import type { SearchType } from "@/types";
+import type { SearchType } from "@/types/github";
 import { GitBranch, Users } from "lucide-react";
 
 interface SearchTypeSelectorProps {

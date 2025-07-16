@@ -1,7 +1,7 @@
-import type { GitHubRepository } from "@/types";
+import type { GitHubRepository } from "@/types/github";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
-import { RepositoryCard } from "../RepositoryCard";
+import { RepositoryCard } from "../cards/RepositoryCard";
 
 // Mock the useFetchData hook
 jest.mock("@/api/useApi", () => ({

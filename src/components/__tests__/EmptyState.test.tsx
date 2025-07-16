@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import { EmptyState } from "../EmptyState";
+import { EmptyState } from "../error-handler/EmptyState";
 
 describe("EmptyState", () => {
   const defaultProps = {

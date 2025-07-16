@@ -2,8 +2,8 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/lib/auth";
-import { useIsFirstTime } from "@/lib/store/useIsFirstTime";
+import { useAuth } from "@/hooks/use-auth";
+import { useIsFirstTime } from "@/store/useIsFirstTime";
 import { ChevronDown, GithubIcon, LogOut } from "lucide-react";
 import { useState } from "react";
 

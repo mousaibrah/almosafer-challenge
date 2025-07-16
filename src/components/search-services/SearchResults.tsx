@@ -1,19 +1,24 @@
 "use client";
 
-import type { GitHubRepository, GitHubUser, SearchType, Sort } from "@/types";
+import type {
+  GitHubRepository,
+  GitHubUser,
+  SearchType,
+  Sort,
+} from "@/types/github";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
-import { EmptyState } from "./EmptyState";
-import { ErrorMessage } from "./ErrorMessage";
-import { LoadingSpinner } from "./LoadingSpinner";
-import { RepositoryCard } from "./RepositoryCard";
-import { UserCard } from "./UserCard";
+import { RepositoryCard } from "../cards/RepositoryCard";
+import { UserCard } from "../cards/UserCard";
+import { EmptyState } from "../error-handler/EmptyState";
+import { ErrorMessage } from "../error-handler/ErrorMessage";
+import { LoadingSpinner } from "../loading/LoadingSpinner";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../ui/select";
 
 interface SearchResultsProps {
   data: (GitHubUser | GitHubRepository)[];

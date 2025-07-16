@@ -1,6 +1,6 @@
-import type { GitHubRepository, GitHubUser } from "@/types";
+import type { GitHubRepository, GitHubUser } from "@/types/github";
 import { render, screen } from "@testing-library/react";
-import { SearchResults } from "../SearchResults";
+import { SearchResults } from "../search-services/SearchResults";
 
 // Mock child components
 jest.mock("../EmptyState", () => ({

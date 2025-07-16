@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import type { GitHubUser } from "@/types";
+import type { GitHubUser } from "@/types/github";
 import { ExternalLink } from "lucide-react";
 
 interface UserCardProps {
