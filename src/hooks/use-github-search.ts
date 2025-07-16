@@ -1,7 +1,7 @@
 "use client";
 
-import { endpoints } from "@/api/endpoints";
-import { useFetchData } from "@/api/useApi";
+import { endpoints } from "@/constants/endpoints";
+import { useFetchData } from "@/query-client/useApi";
 import type {
   GitHubRepository,
   GitHubSearchResponse,

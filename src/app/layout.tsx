@@ -1,6 +1,6 @@
-import { QueryClientWrapper } from "@/api/QueryClientWrapper";
 import { ErrorBoundary } from "@/components";
 import { AuthProvider } from "@/hooks/use-auth";
+import { QueryClientWrapper } from "@/query-client/QueryClientWrapper";
 import type { Metadata } from "next";
 import type React from "react";
 import "./globals.css";
